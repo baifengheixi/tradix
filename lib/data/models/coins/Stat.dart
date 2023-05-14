@@ -23,4 +23,9 @@ class Stat {
   factory Stat.fromJson(Map<String, dynamic> json) => _$StatFromJson(json);
 
   Map<String, dynamic> toJson() => _$StatToJson(this);
+
+  @override
+  String toString() {
+    return 'Stat{total: $total, totalCoins: $totalCoins, totalMarkets: $totalMarkets, totalExchanges: $totalExchanges, totalMarketCap: $totalMarketCap, total24hVolume: $total24hVolume}';
+  }
 }
