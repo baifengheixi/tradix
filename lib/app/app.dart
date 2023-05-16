@@ -10,8 +10,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // return const TestWidget();
     return ResponsiveApp(
       builder: (context) => MaterialApp.router(
+        debugShowCheckedModeBanner: false,
         routerConfig: _appRouter.config(),
       ),
     );

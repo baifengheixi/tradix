@@ -5,6 +5,6 @@ import 'package:tradix/app/dependency_injection/dependencies.dart';
 
 void main() async {
   await dotenv.load(fileName: ".env");
-  configureDependencies();
+  await configureDependencies();
   runApp(MyApp());
 }
