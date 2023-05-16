@@ -2,8 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_builder/responsive_builder.dart';
-import 'package:tradix/app/dependency_injection/dependencies.dart';
-import 'package:tradix/business_logic/blocs/coins/coins_bloc.dart';
+import 'package:tradix/business_logic/blocs/bottom_nav/bottom_nav_bloc.dart';
 import 'package:tradix/presentation/screens/home/views/home_view_desktop.dart';
 import 'package:tradix/presentation/screens/home/views/home_view_mobile.dart';
 import 'package:tradix/presentation/screens/home/views/home_view_tablet.dart';
@@ -15,7 +14,7 @@ class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => getIt<CoinsBloc>(),
+      create: (context) => BottomNavBloc(),
       child: ScreenTypeLayout.builder(
         mobile: (_) => OrientationLayoutBuilder(
           mode: OrientationLayoutBuilderMode.portrait,

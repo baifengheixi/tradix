@@ -7,33 +7,60 @@
 // ignore_for_file: type=lint
 // coverage:ignore-file
 
-part of 'router.dart';
+// ignore_for_file: no_leading_underscores_for_library_prefixes
+import 'package:auto_route/auto_route.dart' as _i6;
+import 'package:tradix/presentation/screens/chat_categories/views/chat_category_view.dart'
+    as _i3;
+import 'package:tradix/presentation/screens/home/views/home_view.dart' as _i1;
+import 'package:tradix/presentation/screens/image_categories/views/Image_category_view.dart'
+    as _i4;
+import 'package:tradix/presentation/screens/on_boarding/views/on_boarding_view.dart'
+    as _i2;
+import 'package:tradix/presentation/screens/settings/views/setting_view.dart'
+    as _i5;
 
-abstract class _$AppRouter extends RootStackRouter {
-  // ignore: unused_element
-  _$AppRouter({super.navigatorKey});
+abstract class $AppRouter extends _i6.RootStackRouter {
+  $AppRouter({super.navigatorKey});
 
   @override
-  final Map<String, PageFactory> pagesMap = {
+  final Map<String, _i6.PageFactory> pagesMap = {
     HomeRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
+      return _i6.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const HomeView(),
+        child: const _i1.HomeView(),
       );
     },
     OnBoardingRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
+      return _i6.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const OnBoardingView(),
+        child: const _i2.OnBoardingView(),
+      );
+    },
+    ChatCategoryRoute.name: (routeData) {
+      return _i6.AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const _i3.ChatCategoryView(),
+      );
+    },
+    ImageCategoryRoute.name: (routeData) {
+      return _i6.AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const _i4.ImageCategoryView(),
+      );
+    },
+    SettingRoute.name: (routeData) {
+      return _i6.AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const _i5.SettingView(),
       );
     },
   };
 }
 
 /// generated route for
-/// [HomeView]
-class HomeRoute extends PageRouteInfo<void> {
-  const HomeRoute({List<PageRouteInfo>? children})
+/// [_i1.HomeView]
+class HomeRoute extends _i6.PageRouteInfo<void> {
+  const HomeRoute({List<_i6.PageRouteInfo>? children})
       : super(
           HomeRoute.name,
           initialChildren: children,
@@ -41,13 +68,13 @@ class HomeRoute extends PageRouteInfo<void> {
 
   static const String name = 'HomeRoute';
 
-  static const PageInfo<void> page = PageInfo<void>(name);
+  static const _i6.PageInfo<void> page = _i6.PageInfo<void>(name);
 }
 
 /// generated route for
-/// [OnBoardingView]
-class OnBoardingRoute extends PageRouteInfo<void> {
-  const OnBoardingRoute({List<PageRouteInfo>? children})
+/// [_i2.OnBoardingView]
+class OnBoardingRoute extends _i6.PageRouteInfo<void> {
+  const OnBoardingRoute({List<_i6.PageRouteInfo>? children})
       : super(
           OnBoardingRoute.name,
           initialChildren: children,
@@ -55,5 +82,47 @@ class OnBoardingRoute extends PageRouteInfo<void> {
 
   static const String name = 'OnBoardingRoute';
 
-  static const PageInfo<void> page = PageInfo<void>(name);
+  static const _i6.PageInfo<void> page = _i6.PageInfo<void>(name);
+}
+
+/// generated route for
+/// [_i3.ChatCategoryView]
+class ChatCategoryRoute extends _i6.PageRouteInfo<void> {
+  const ChatCategoryRoute({List<_i6.PageRouteInfo>? children})
+      : super(
+          ChatCategoryRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'ChatCategoryRoute';
+
+  static const _i6.PageInfo<void> page = _i6.PageInfo<void>(name);
+}
+
+/// generated route for
+/// [_i4.ImageCategoryView]
+class ImageCategoryRoute extends _i6.PageRouteInfo<void> {
+  const ImageCategoryRoute({List<_i6.PageRouteInfo>? children})
+      : super(
+          ImageCategoryRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'ImageCategoryRoute';
+
+  static const _i6.PageInfo<void> page = _i6.PageInfo<void>(name);
+}
+
+/// generated route for
+/// [_i5.SettingView]
+class SettingRoute extends _i6.PageRouteInfo<void> {
+  const SettingRoute({List<_i6.PageRouteInfo>? children})
+      : super(
+          SettingRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'SettingRoute';
+
+  static const _i6.PageInfo<void> page = _i6.PageInfo<void>(name);
 }

@@ -4,7 +4,7 @@ import 'package:responsive_builder/responsive_builder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:tradix/app/dependency_injection/dependencies.dart';
-import 'package:tradix/app/routes/router.dart';
+import 'package:tradix/app/routes/router.gr.dart';
 
 class OnBoardingMobileView extends StatefulWidget {
   const OnBoardingMobileView({Key? key}) : super(key: key);

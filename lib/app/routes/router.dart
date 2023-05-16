@@ -1,13 +1,10 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tradix/app/dependency_injection/dependencies.dart';
-import 'package:tradix/presentation/screens/home/home.dart';
-import 'package:tradix/presentation/screens/on_boarding/on_boarding.dart';
-
-part 'router.gr.dart';
+import 'package:tradix/app/routes/router.gr.dart';
 
 @AutoRouterConfig(replaceInRouteName: 'View,Route')
-class AppRouter extends _$AppRouter {
+class AppRouter extends $AppRouter {
   final SharedPreferences _prefs = getIt<SharedPreferences>();
 
   @override
@@ -15,6 +12,12 @@ class AppRouter extends _$AppRouter {
         AutoRoute(
           page: HomeRoute.page,
           initial: _prefs.getBool("hasInitApp") != null,
+          children: [
+            RedirectRoute(path: '', redirectTo: 'chats'),
+            AutoRoute(path: 'chats', page: ChatCategoryRoute.page),
+            AutoRoute(path: 'images', page: ImageCategoryRoute.page),
+            AutoRoute(path: 'settings', page: SettingRoute.page),
+          ],
         ),
         AutoRoute(
           page: OnBoardingRoute.page,
