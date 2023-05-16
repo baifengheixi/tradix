@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tradix/app/routes/router.gr.dart';
 import 'package:tradix/business_logic/blocs/bottom_nav/bottom_nav_bloc.dart';
-import 'package:tradix/presentation/widgets/bottom_nav.dart';
+import 'package:tradix/presentation/screens/home/widgets/bottom_nav.dart';
 
 class HomeViewMobile extends StatelessWidget {
   const HomeViewMobile({Key? key}) : super(key: key);
