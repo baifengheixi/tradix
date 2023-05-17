@@ -23,5 +23,6 @@ class AppRouter extends $AppRouter {
           page: OnBoardingRoute.page,
           initial: _prefs.getBool("hasInitApp") == null,
         ),
+        AutoRoute(page: ChatRoute.page),
       ];
 }

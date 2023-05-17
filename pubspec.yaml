@@ -34,9 +34,11 @@ dependencies:
   flutter_localizations:
     sdk: flutter
 
+  auto_size_text: ^3.0.0
   animated_bottom_navigation_bar: ^1.2.0
   auto_route: ^7.1.0
   bloc: ^8.1.1
+  carousel_slider: ^4.2.1
   cupertino_icons: ^1.0.5
   equatable: ^2.0.5
   flutter_bloc: ^8.1.2

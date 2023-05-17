@@ -10,30 +10,35 @@ class HomeViewMobile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AutoTabsScaffold(
-      routes: const [
-        ChatCategoryRoute(),
-        ImageCategoryRoute(),
-        SettingRoute(),
-        SettingRoute(),
-      ],
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBuilder: (_, tabsRouter) {
-        return BlocBuilder<BottomNavBloc, BottomNavState>(
-          builder: (context, state) {
-            return BottomNav(
-              activeIndex: context.read<BottomNavBloc>().state.index,
-              onTap: (index) {
-                context.read<BottomNavBloc>().add(BottomNavUpdateIndexEvent(index: index));
-                tabsRouter.setActiveIndex(index);
+    return Container(
+      color: Colors.white,
+      child: SafeArea(
+        child: AutoTabsScaffold(
+          routes: const [
+            ChatCategoryRoute(),
+            ImageCategoryRoute(),
+            SettingRoute(),
+            SettingRoute(),
+          ],
+          floatingActionButton: FloatingActionButton(
+            onPressed: () {},
+          ),
+          floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+          bottomNavigationBuilder: (_, tabsRouter) {
+            return BlocBuilder<BottomNavBloc, BottomNavState>(
+              builder: (context, state) {
+                return BottomNav(
+                  activeIndex: context.read<BottomNavBloc>().state.index,
+                  onTap: (index) {
+                    context.read<BottomNavBloc>().add(BottomNavUpdateIndexEvent(index: index));
+                    tabsRouter.setActiveIndex(index);
+                  },
+                );
               },
             );
           },
-        );
-      },
+        ),
+      ),
     );
   }
 }
