@@ -40,6 +40,7 @@ dependencies:
   bloc: ^8.1.1
   carousel_slider: ^4.2.1
   cupertino_icons: ^1.0.5
+  dart_openai: ^1.9.91
   equatable: ^2.0.5
   flutter_bloc: ^8.1.2
   flutter_dotenv: ^5.0.2

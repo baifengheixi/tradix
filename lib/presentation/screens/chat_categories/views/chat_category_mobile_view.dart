@@ -33,7 +33,7 @@ class ChatCategoryMobileView extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 16),
+            SizedBox(height: 2.screenHeight),
             Padding(
               padding: EdgeInsets.only(left: 5.screenWidth),
               child: Text(
