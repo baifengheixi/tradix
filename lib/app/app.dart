@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tradix/app/commons/dark_theme.dart';
@@ -33,6 +34,9 @@ class MyApp extends StatelessWidget {
         theme: LightTheme.getTheme(),
         darkTheme: DarkTheme.getTheme(),
         routerConfig: _appRouter.config(),
+        locale: Locale("en"),
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
       ),
     );
   }
