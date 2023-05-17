@@ -1,3 +1,4 @@
 enum SharePrefs {
   theme,
+  hasInitApp,
 }
