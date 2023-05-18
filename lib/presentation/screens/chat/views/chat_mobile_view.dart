@@ -13,7 +13,7 @@ class ChatMobileView extends StatelessWidget {
       body: BlocBuilder<ChatOpenAIBloc, ChatOpenAIState>(
         builder: (context, state) {
           return Center(
-            child: Text(context.read<ChatOpenAIBloc>().state.openai?.choices.first.message.content ?? "no data"),
+            child: Text(context.read<ChatOpenAIBloc>().state.message ?? "no data"),
           );
         },
       ),

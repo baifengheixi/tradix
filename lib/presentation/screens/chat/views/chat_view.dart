@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_builder/responsive_builder.dart';
+import 'package:tradix/app/dependency_injection/dependencies.dart';
 import 'package:tradix/business_logic/blocs/chat_openai/chat_openai_bloc.dart';
 import 'package:tradix/presentation/screens/chat/views/chat_mobile_view.dart';
 
@@ -12,7 +13,7 @@ class ChatView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => ChatOpenAIBloc(),
+      create: (context) => getIt<ChatOpenAIBloc>(),
       child: ScreenTypeLayout.builder(
         mobile: (_) => OrientationLayoutBuilder(
           mode: OrientationLayoutBuilderMode.portrait,

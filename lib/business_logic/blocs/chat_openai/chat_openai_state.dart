@@ -2,13 +2,13 @@ part of 'chat_openai_bloc.dart';
 
 @immutable
 abstract class ChatOpenAIState {
-  final OpenAIChatCompletionModel? openai;
+  final String? message;
   final String? errorMessage;
   final int? statusCode;
   final bool isLoading;
 
   const ChatOpenAIState({
-    this.openai,
+    this.message = '',
     this.errorMessage,
     this.statusCode,
     this.isLoading = false,
@@ -22,7 +22,7 @@ class ChatOpenAILoading extends ChatOpenAIState {
 }
 
 class ChatOpenAILoaded extends ChatOpenAIState {
-  const ChatOpenAILoaded({required OpenAIChatCompletionModel openai}) : super(openai: openai, isLoading: false);
+  const ChatOpenAILoaded({required String message}) : super(message: message, isLoading: false);
 }
 
 class ChatOpenAIError extends ChatOpenAIState {
