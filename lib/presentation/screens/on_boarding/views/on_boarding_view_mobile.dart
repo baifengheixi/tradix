@@ -1,9 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_builder/responsive_builder.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:tradix/app/dependency_injection/dependencies.dart';
 import 'package:tradix/app/routes/router.gr.dart';
 
 class OnBoardingMobileView extends StatefulWidget {
@@ -15,7 +13,6 @@ class OnBoardingMobileView extends StatefulWidget {
 
 class _OnBoardingMobileView extends State<OnBoardingMobileView> {
   final controller = PageController();
-  final SharedPreferences _prefs = getIt<SharedPreferences>();
   bool isLastPage = false;
 
   @override
@@ -235,9 +232,7 @@ class _OnBoardingMobileView extends State<OnBoardingMobileView> {
                 child: ElevatedButton(
                   onPressed: () {
                     if (isLastPage) {
-                      _prefs.setBool('hasInitApp', isLastPage).then((bool success) {
-                        context.router.push(const HomeRoute());
-                      });
+                      context.router.push(const HomeRoute());
                     } else {
                       controller.nextPage(
                         duration: const Duration(milliseconds: 500),

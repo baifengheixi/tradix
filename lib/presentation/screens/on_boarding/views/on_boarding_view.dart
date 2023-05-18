@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:tradix/app/dependency_injection/dependencies.dart';
+import 'package:tradix/business_logic/blocs/app_config/app_config_bloc.dart';
 import 'package:tradix/business_logic/blocs/coins/coins_bloc.dart';
 import 'package:tradix/presentation/screens/on_boarding/views/on_boarding_view_mobile.dart';
 
@@ -12,6 +13,8 @@ class OnBoardingView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    context.read<AppConfigBloc>().add(AppConfigUpdateEvent());
+
     return BlocProvider(
       create: (context) => getIt<CoinsBloc>(),
       child: ScreenTypeLayout.builder(

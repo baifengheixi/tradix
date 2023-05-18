@@ -1,20 +1,21 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:tradix/app/commons/extension/string.dart';
-import 'package:tradix/app/commons/share_preference.dart';
-import 'package:tradix/app/dependency_injection/dependencies.dart';
 import 'package:tradix/app/routes/router.gr.dart';
+import 'package:tradix/business_logic/blocs/app_config/app_config_bloc.dart';
 
 @AutoRouterConfig(replaceInRouteName: 'View,Route')
 class AppRouter extends $AppRouter {
-  final SharedPreferences _prefs = getIt<SharedPreferences>();
+  hasAlreadyInitial() {
+    return HydratedBloc.storage.read('$AppConfigBloc') == null ? false : true;
+  }
 
   @override
   List<AutoRoute> get routes => [
         AutoRoute(
           path: HomeRoute.name.path,
           page: HomeRoute.page,
-          initial: _prefs.getBool(SharePrefs.hasInitApp.toString()) != null,
+          initial: hasAlreadyInitial(),
           children: [
             RedirectRoute(path: '', redirectTo: ChatCategoryRoute.name),
             AutoRoute(path: ChatCategoryRoute.name, page: ChatCategoryRoute.page),
@@ -25,7 +26,7 @@ class AppRouter extends $AppRouter {
         AutoRoute(
           path: OnBoardingRoute.name.path,
           page: OnBoardingRoute.page,
-          initial: _prefs.getBool(SharePrefs.hasInitApp.toString()) == null,
+          initial: !hasAlreadyInitial(),
         ),
         AutoRoute(
           path: ChatRoute.name.path,
