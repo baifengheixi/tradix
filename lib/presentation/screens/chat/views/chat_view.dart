@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:tradix/app/dependency_injection/dependencies.dart';
-import 'package:tradix/business_logic/blocs/chat_openai/chat_openai_bloc.dart';
+import 'package:tradix/presentation/screens/chat/bloc/ai_message/ai_message_bloc.dart';
+import 'package:tradix/presentation/screens/chat/cubit/history_message/history_message_cubit.dart';
+import 'package:tradix/presentation/screens/chat/cubit/user_message/user_message_cubit.dart';
 import 'package:tradix/presentation/screens/chat/views/chat_mobile_view.dart';
 
 @RoutePage()
@@ -12,8 +14,18 @@ class ChatView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => getIt<ChatOpenAIBloc>(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<AIMessageBloc>(
+          create: (BuildContext context) => getIt<AIMessageBloc>(),
+        ),
+        BlocProvider<HistoryMessageCubit>(
+          create: (BuildContext context) => HistoryMessageCubit(),
+        ),
+        BlocProvider<UserMessageCubit>(
+          create: (BuildContext context) => UserMessageCubit(),
+        ),
+      ],
       child: ScreenTypeLayout.builder(
         mobile: (_) => OrientationLayoutBuilder(
           mode: OrientationLayoutBuilderMode.portrait,
