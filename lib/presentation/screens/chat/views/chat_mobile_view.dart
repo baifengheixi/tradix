@@ -1,7 +1,10 @@
 import 'package:dart_openai/openai.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:markdown/markdown.dart' as md;
 import 'package:responsive_builder/responsive_builder.dart';
+import 'package:tradix/business_logic/cubit/system_message/system_message_cubit.dart';
 import 'package:tradix/presentation/screens/chat/bloc/ai_message/ai_message_bloc.dart';
 import 'package:tradix/presentation/screens/chat/cubit/history_message/history_message_cubit.dart';
 import 'package:tradix/presentation/screens/chat/cubit/user_message/user_message_cubit.dart';
@@ -14,6 +17,15 @@ class ChatMobileView extends StatelessWidget {
     var userMessageCubit = BlocProvider.of<UserMessageCubit>(context);
     var historyMessageCubit = BlocProvider.of<HistoryMessageCubit>(context);
     var aiMessageBloc = BlocProvider.of<AIMessageBloc>(context);
+    var systemMessageCubit = BlocProvider.of<SystemMessageCubit>(context);
+
+    init() {
+      historyMessageCubit.push(systemMessageCubit.state.message, OpenAIChatMessageRole.system);
+      systemMessageCubit.clear();
+      aiMessageBloc.add(AIMessageFetchEvent(history: historyMessageCubit.state.history));
+    }
+
+    init();
 
     return BlocListener<AIMessageBloc, AIMessageState>(
       listener: (context, state) {
@@ -25,15 +37,28 @@ class ChatMobileView extends StatelessWidget {
         appBar: AppBar(),
         body: BlocBuilder<HistoryMessageCubit, HistoryMessageState>(
           builder: (context, state) {
-            return ListView.builder(
-              itemCount: historyMessageCubit.state.history.length,
-              itemBuilder: (BuildContext context, int index) {
-                var history = historyMessageCubit.state.history[index];
+            return Column(
+              children: [
+                ListView.builder(
+                  shrinkWrap: true,
+                  scrollDirection: Axis.vertical,
+                  itemCount: historyMessageCubit.state.history.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    var history = historyMessageCubit.state.history[index];
 
-                return ListTile(
-                    leading: index % 2 == 0 ? const Icon(Icons.add) : const Icon(Icons.remove),
-                    title: Text(history.content));
-              },
+                    return ListTile(
+                      leading: index % 2 == 0 ? const Icon(Icons.add) : const Icon(Icons.remove),
+                      subtitle: MarkdownBody(
+                        data: history.content,
+                        extensionSet: md.ExtensionSet(
+                          md.ExtensionSet.gitHubFlavored.blockSyntaxes,
+                          [md.EmojiSyntax(), ...md.ExtensionSet.gitHubFlavored.inlineSyntaxes],
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ],
             );
           },
         ),

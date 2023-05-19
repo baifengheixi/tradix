@@ -1,20 +1,18 @@
 import 'dart:math' as math;
 
-import 'package:auto_route/auto_route.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_builder/responsive_builder.dart';
-import 'package:tradix/app/commons/extension/string.dart';
-import 'package:tradix/app/routes/router.gr.dart';
+import 'package:tradix/presentation/screens/chat_categories/widgets/alert_prompt.dart';
 
 class CategorySlider extends StatelessWidget {
-  final List<String> texts;
+  final Map<String, String> titleData;
   final int width = 40;
   final int maxLine = 2;
 
   const CategorySlider({
-    required this.texts,
+    required this.titleData,
     super.key,
   });
 
@@ -31,21 +29,24 @@ class CategorySlider extends StatelessWidget {
     return randomColor;
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return CarouselSlider(
-      options: CarouselOptions(
-        height: 15.screenHeight,
-        viewportFraction: width / 100,
-        enableInfiniteScroll: false,
-        padEnds: false,
-      ),
-      items: texts.map((text) {
-        return Builder(
+  List<Widget> buildItems() {
+    List<Widget> items = [];
+
+    for (var subTitle in titleData.keys) {
+      items.add(
+        Builder(
           builder: (BuildContext context) {
             return GestureDetector(
               onTap: () {
-                AutoRouter.of(context).pushNamed(ChatRoute.name.path);
+                showDialog(
+                  context: context,
+                  builder: (_) {
+                    return AlertPrompt(
+                      title: subTitle,
+                      prompt: titleData[subTitle]!,
+                    );
+                  },
+                );
               },
               child: Container(
                 padding: const EdgeInsets.all(16),
@@ -58,7 +59,7 @@ class CategorySlider extends StatelessWidget {
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: AutoSizeText(
-                    text,
+                    subTitle,
                     style: Theme.of(context).textTheme.bodyLarge,
                     maxLines: maxLine,
                   ),
@@ -66,8 +67,23 @@ class CategorySlider extends StatelessWidget {
               ),
             );
           },
-        );
-      }).toList(),
+        ),
+      );
+    }
+
+    return items;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return CarouselSlider(
+      options: CarouselOptions(
+        height: 15.screenHeight,
+        viewportFraction: width / 100,
+        enableInfiniteScroll: false,
+        padEnds: false,
+      ),
+      items: buildItems(),
     );
   }
 }

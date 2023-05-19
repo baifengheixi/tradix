@@ -28,7 +28,7 @@ class ChatCategoryMobileView extends StatelessWidget {
       ),
     ];
 
-    for (var key in chatCategories.keys) {
+    for (var title in chatCategories.keys) {
       categories.add(
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -37,13 +37,13 @@ class ChatCategoryMobileView extends StatelessWidget {
             Padding(
               padding: EdgeInsets.only(left: 5.screenWidth),
               child: Text(
-                key,
+                title,
                 style: Theme.of(context).textTheme.titleMedium,
               ),
             ),
             Padding(
               padding: EdgeInsets.only(left: (2.5).screenWidth),
-              child: CategorySlider(texts: chatCategories[key]!),
+              child: CategorySlider(titleData: chatCategories[title]!),
             ),
           ],
         ),
