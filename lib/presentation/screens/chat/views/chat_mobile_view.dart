@@ -1,8 +1,8 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:dart_openai/openai.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_markdown/flutter_markdown.dart';
-import 'package:markdown/markdown.dart' as md;
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:tradix/business_logic/cubit/system_message/system_message_cubit.dart';
 import 'package:tradix/presentation/screens/chat/bloc/ai_message/ai_message_bloc.dart';
@@ -19,73 +19,170 @@ class ChatMobileView extends StatelessWidget {
     var aiMessageBloc = BlocProvider.of<AIMessageBloc>(context);
     var systemMessageCubit = BlocProvider.of<SystemMessageCubit>(context);
 
-    init() {
-      historyMessageCubit.push(systemMessageCubit.state.message, OpenAIChatMessageRole.system);
-      systemMessageCubit.clear();
-      aiMessageBloc.add(AIMessageFetchEvent(history: historyMessageCubit.state.history));
+    Widget welcomeText() {
+      return ListTile(
+        leading: ConstrainedBox(
+          constraints: BoxConstraints(
+            maxWidth: 10.screenWidth,
+            maxHeight: 10.screenWidth,
+          ),
+          child: Image.asset('assets/images/logo.png'),
+        ),
+        title: Text("Hi! How can I help you"),
+      );
     }
 
-    init();
-
-    return BlocListener<AIMessageBloc, AIMessageState>(
-      listener: (context, state) {
-        if (state.isCompleted) {
-          historyMessageCubit.push(aiMessageBloc.state.message, OpenAIChatMessageRole.assistant);
-        }
-      },
-      child: Scaffold(
-        appBar: AppBar(),
-        body: BlocBuilder<HistoryMessageCubit, HistoryMessageState>(
-          builder: (context, state) {
-            return Column(
-              children: [
-                ListView.builder(
-                  shrinkWrap: true,
-                  scrollDirection: Axis.vertical,
-                  itemCount: historyMessageCubit.state.history.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    var history = historyMessageCubit.state.history[index];
-
-                    return ListTile(
-                      leading: index % 2 == 0 ? const Icon(Icons.add) : const Icon(Icons.remove),
-                      subtitle: MarkdownBody(
-                        data: history.content,
-                        extensionSet: md.ExtensionSet(
-                          md.ExtensionSet.gitHubFlavored.blockSyntaxes,
-                          [md.EmojiSyntax(), ...md.ExtensionSet.gitHubFlavored.inlineSyntaxes],
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ],
-            );
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<AIMessageBloc, AIMessageState>(
+          listener: (context, state) {
+            if (state.isCompleted) {
+              historyMessageCubit.push(aiMessageBloc.state.message, OpenAIChatMessageRole.assistant);
+            }
           },
         ),
+        BlocListener<HistoryMessageCubit, HistoryMessageState>(
+          listenWhen: (previous, current) {
+            if (systemMessageCubit.state.message.isNotEmpty) {
+              systemMessageCubit.clear();
+              return true;
+            }
+            if (userMessageCubit.state.message.isNotEmpty) {
+              userMessageCubit.clear();
+              return true;
+            }
+            return false;
+          },
+          listener: (context, state) {
+            aiMessageBloc.add(AIMessageFetchEvent(history: historyMessageCubit.state.history));
+          },
+        ),
+      ],
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          elevation: 0,
+          leading: IconButton(
+            color: Colors.black,
+            icon: const Icon(Icons.west),
+            onPressed: () {
+              systemMessageCubit.clear();
+              AutoRouter.of(context).pop();
+            },
+            tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+          ),
+        ),
+        body: SingleChildScrollView(
+          padding: EdgeInsets.only(bottom: 15.screenHeight),
+          physics: const ScrollPhysics(),
+          reverse: true,
+          child: Column(
+            children: [
+              welcomeText(),
+              BlocBuilder<HistoryMessageCubit, HistoryMessageState>(
+                builder: (context, state) {
+                  return ListView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: state.history.length,
+                    itemBuilder: (context, index) {
+                      var message = historyMessageCubit.state.history[index].content;
+
+                      return ListTile(
+                        onLongPress: () {
+                          Clipboard.setData(ClipboardData(text: message));
+                        },
+                        leading: index % 2 != 0
+                            ? ConstrainedBox(
+                                constraints: BoxConstraints(
+                                  maxWidth: 10.screenWidth,
+                                  maxHeight: 10.screenWidth,
+                                ),
+                                child: Image.asset('assets/images/logo.png'),
+                              )
+                            : Icon(
+                                Icons.account_circle,
+                                size: 8.screenWidth,
+                              ),
+                        title: Text(message),
+                        // title: MarkdownBody(
+                        //   data: historyMessageCubit.state.history[index].content,
+                        //   extensionSet: md.ExtensionSet(
+                        //     md.ExtensionSet.gitHubFlavored.blockSyntaxes,
+                        //     [md.EmojiSyntax(), ...md.ExtensionSet.gitHubFlavored.inlineSyntaxes],
+                        //   ),
+                        // ),
+                      );
+                    },
+                  );
+                },
+              ),
+              BlocBuilder<AIMessageBloc, AIMessageState>(
+                builder: (context, state) {
+                  if (state.isCompleted || state.message.isEmpty) {
+                    return Container();
+                  }
+                  return ListTile(
+                    leading: Icon(
+                      Icons.account_circle,
+                      size: 8.screenWidth,
+                    ),
+                    title: Text(aiMessageBloc.state.message),
+                    // title: MarkdownBody(
+                    //   data: aiMessageBloc.state.message,
+                    //   extensionSet: md.ExtensionSet(
+                    //     md.ExtensionSet.gitHubFlavored.blockSyntaxes,
+                    //     [md.EmojiSyntax(), ...md.ExtensionSet.gitHubFlavored.inlineSyntaxes],
+                    //   ),
+                    // ),
+                  );
+                },
+              ),
+            ],
+          ),
+        ),
         bottomSheet: Container(
-          color: Colors.blue,
+          decoration: BoxDecoration(
+            border: Border(
+              top: BorderSide(color: Colors.grey.shade300),
+            ),
+            color: Colors.white,
+          ),
           padding: EdgeInsets.all(5.screenWidth),
-          height: 10.screenHeight,
           child: Row(
             children: [
               Flexible(
-                child: TextField(
-                  decoration: const InputDecoration(
-                    border: InputBorder.none,
-                    hintText: 'Enter a message',
-                  ),
-                  keyboardType: TextInputType.multiline,
-                  onChanged: (value) {
-                    userMessageCubit.update(value);
+                child: BlocBuilder<SystemMessageCubit, SystemMessageState>(
+                  builder: (context, state) {
+                    return TextField(
+                      maxLines: null,
+                      controller: TextEditingController(text: state.message),
+                      decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        hintText: 'Enter a message',
+                      ),
+                      keyboardType: TextInputType.multiline,
+                      onChanged: (value) {
+                        if (state.message.isEmpty) {
+                          userMessageCubit.update(value);
+                        }
+                      },
+                    );
                   },
                 ),
               ),
               SizedBox(width: 2.screenWidth),
               GestureDetector(
                 onTap: () {
-                  historyMessageCubit.push(userMessageCubit.state.message, OpenAIChatMessageRole.user);
-                  userMessageCubit.clear();
-                  aiMessageBloc.add(AIMessageFetchEvent(history: historyMessageCubit.state.history));
+                  if (userMessageCubit.state.message.isEmpty && systemMessageCubit.state.message.isEmpty) {
+                    return;
+                  }
+                  if (systemMessageCubit.state.message.isNotEmpty) {
+                    historyMessageCubit.push(systemMessageCubit.state.message, OpenAIChatMessageRole.system);
+                  } else {
+                    historyMessageCubit.push(userMessageCubit.state.message, OpenAIChatMessageRole.user);
+                  }
                 },
                 child: const Icon(Icons.send),
               ),

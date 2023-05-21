@@ -1,10 +1,14 @@
 import 'dart:math' as math;
 
+import 'package:auto_route/auto_route.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_builder/responsive_builder.dart';
-import 'package:tradix/presentation/screens/chat_categories/widgets/alert_prompt.dart';
+import 'package:tradix/app/commons/extension/string.dart';
+import 'package:tradix/app/routes/router.gr.dart';
+import 'package:tradix/business_logic/cubit/system_message/system_message_cubit.dart';
 
 class CategorySlider extends StatelessWidget {
   final Map<String, String> titleData;
@@ -29,7 +33,9 @@ class CategorySlider extends StatelessWidget {
     return randomColor;
   }
 
-  List<Widget> buildItems() {
+  List<Widget> buildItems(BuildContext context) {
+    var systemMessageCubit = BlocProvider.of<SystemMessageCubit>(context);
+
     List<Widget> items = [];
 
     for (var subTitle in titleData.keys) {
@@ -38,15 +44,17 @@ class CategorySlider extends StatelessWidget {
           builder: (BuildContext context) {
             return GestureDetector(
               onTap: () {
-                showDialog(
-                  context: context,
-                  builder: (_) {
-                    return AlertPrompt(
-                      title: subTitle,
-                      prompt: titleData[subTitle]!,
-                    );
-                  },
-                );
+                systemMessageCubit.update(titleData[subTitle]!);
+                AutoRouter.of(context).pushNamed(ChatRoute.name.path);
+                // showDialog(
+                //   context: context,
+                //   builder: (_) {
+                //     return AlertPrompt(
+                //       title: subTitle,
+                //       prompt: titleData[subTitle]!,
+                //     );
+                //   },
+                // );
               },
               child: Container(
                 padding: const EdgeInsets.all(16),
@@ -83,7 +91,7 @@ class CategorySlider extends StatelessWidget {
         enableInfiniteScroll: false,
         padEnds: false,
       ),
-      items: buildItems(),
+      items: buildItems(context),
     );
   }
 }

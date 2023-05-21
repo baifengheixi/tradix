@@ -10,6 +10,8 @@ class HomeViewMobile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var bottomNavBloc = BlocProvider.of<BottomNavBloc>(context);
+
     return Container(
       color: Colors.white,
       child: SafeArea(
@@ -30,7 +32,7 @@ class HomeViewMobile extends StatelessWidget {
                 return BottomNav(
                   activeIndex: context.read<BottomNavBloc>().state.index,
                   onTap: (index) {
-                    context.read<BottomNavBloc>().add(BottomNavUpdateIndexEvent(index: index));
+                    bottomNavBloc.add(BottomNavUpdateIndexEvent(index: index));
                     tabsRouter.setActiveIndex(index);
                   },
                 );

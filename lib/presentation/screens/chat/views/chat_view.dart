@@ -20,10 +20,10 @@ class ChatView extends StatelessWidget {
           create: (BuildContext context) => getIt<AIMessageBloc>(),
         ),
         BlocProvider<HistoryMessageCubit>(
-          create: (BuildContext context) => HistoryMessageCubit(),
+          create: (BuildContext context) => getIt<HistoryMessageCubit>(),
         ),
         BlocProvider<UserMessageCubit>(
-          create: (BuildContext context) => UserMessageCubit(),
+          create: (BuildContext context) => getIt<UserMessageCubit>(),
         ),
       ],
       child: ScreenTypeLayout.builder(

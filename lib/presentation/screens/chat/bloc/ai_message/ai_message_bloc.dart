@@ -14,7 +14,7 @@ class AIMessageBloc extends Bloc<AIMessageEvent, AIMessageState> {
   AIMessageBloc(this._chatOpenAIRepository) : super(AIMessageInitial()) {
     on<AIMessageFetchEvent>((event, emit) async {
       emit(AIMessageLoading());
-      OpenAI.apiKey = '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';
+      OpenAI.apiKey = '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';
 
       try {
         var chatCompletion = _chatOpenAIRepository.chatStream(
