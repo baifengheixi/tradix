@@ -15,6 +15,8 @@ import 'package:tradix/app/dependency_injection/third_party.dart' as _i11;
 import 'package:tradix/app/routes/router.dart' as _i3;
 import 'package:tradix/business_logic/blocs/bottom_nav/bottom_nav_bloc.dart'
     as _i4;
+import 'package:tradix/business_logic/cubit/user_message/user_message_cubit.dart'
+    as _i9;
 import 'package:tradix/data/data_providers/coins_provider.dart' as _i6;
 import 'package:tradix/data/repositories/chat_openai_repository.dart' as _i5;
 import 'package:tradix/data/repositories/coins_repository.dart' as _i7;
@@ -22,8 +24,6 @@ import 'package:tradix/presentation/screens/chat/bloc/ai_message/ai_message_bloc
     as _i10;
 import 'package:tradix/presentation/screens/chat/cubit/history_message/history_message_cubit.dart'
     as _i8;
-import 'package:tradix/presentation/screens/chat/cubit/user_message/user_message_cubit.dart'
-    as _i9;
 
 extension GetItInjectableX on _i1.GetIt {
   // initializes the registration of main-scope dependencies inside of GetIt

@@ -8,7 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:tradix/app/commons/extension/string.dart';
 import 'package:tradix/app/routes/router.gr.dart';
-import 'package:tradix/business_logic/cubit/system_message/system_message_cubit.dart';
+import 'package:tradix/business_logic/cubit/user_message/user_message_cubit.dart';
 
 class CategorySlider extends StatelessWidget {
   final Map<String, String> titleData;
@@ -34,7 +34,7 @@ class CategorySlider extends StatelessWidget {
   }
 
   List<Widget> buildItems(BuildContext context) {
-    var systemMessageCubit = BlocProvider.of<SystemMessageCubit>(context);
+    var userMessageCubit = BlocProvider.of<UserMessageCubit>(context);
 
     List<Widget> items = [];
 
@@ -44,7 +44,7 @@ class CategorySlider extends StatelessWidget {
           builder: (BuildContext context) {
             return GestureDetector(
               onTap: () {
-                systemMessageCubit.update(titleData[subTitle]!);
+                userMessageCubit.update(titleData[subTitle]!);
                 AutoRouter.of(context).pushNamed(ChatRoute.name.path);
                 // showDialog(
                 //   context: context,

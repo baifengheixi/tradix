@@ -7,7 +7,7 @@ import 'package:tradix/app/commons/light_theme.dart';
 import 'package:tradix/app/dependency_injection/dependencies.dart';
 import 'package:tradix/app/routes/router.dart';
 import 'package:tradix/business_logic/blocs/app_config/app_config_bloc.dart';
-import 'package:tradix/business_logic/cubit/system_message/system_message_cubit.dart';
+import 'package:tradix/business_logic/cubit/user_message/user_message_cubit.dart';
 
 class MyApp extends StatelessWidget {
   final AppRouter _appRouter = getIt<AppRouter>();
@@ -31,8 +31,8 @@ class MyApp extends StatelessWidget {
         BlocProvider<AppConfigBloc>(
           create: (BuildContext context) => AppConfigBloc(),
         ),
-        BlocProvider<SystemMessageCubit>(
-          create: (BuildContext context) => SystemMessageCubit(),
+        BlocProvider<UserMessageCubit>(
+          create: (BuildContext context) => UserMessageCubit(),
         ),
       ],
       child: ResponsiveApp(

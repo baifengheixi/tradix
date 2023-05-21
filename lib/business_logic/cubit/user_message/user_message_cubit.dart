@@ -9,10 +9,16 @@ class UserMessageCubit extends Cubit<UserMessageState> {
   UserMessageCubit() : super(UserMessageInitial());
 
   update(String message) {
-    emit(UserMessageUpdate(message: message));
+    emit(UserMessageUpdate(
+      message: message,
+      isSubmitted: false,
+    ));
   }
 
   clear() {
-    emit(const UserMessageUpdate(message: ''));
+    emit(const UserMessageUpdate(
+      message: '',
+      isSubmitted: true,
+    ));
   }
 }

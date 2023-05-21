@@ -1,9 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tradix/app/commons/extension/string.dart';
 import 'package:tradix/app/routes/router.gr.dart';
-import 'package:tradix/business_logic/cubit/system_message/system_message_cubit.dart';
 
 class AlertPrompt extends StatelessWidget {
   final String title;
@@ -17,7 +15,7 @@ class AlertPrompt extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var systemMessageCubit = BlocProvider.of<SystemMessageCubit>(context);
+    // var systemMessageCubit = BlocProvider.of<SystemMessageCubit>(context);
 
     return AlertDialog(
       shape: const RoundedRectangleBorder(
@@ -66,7 +64,7 @@ class AlertPrompt extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: ElevatedButton(
                 onPressed: () {
-                  systemMessageCubit.update(prompt);
+                  // systemMessageCubit.update(prompt);
                   AutoRouter.of(context).pop();
                   AutoRouter.of(context).pushNamed(ChatRoute.name.path);
                 },
