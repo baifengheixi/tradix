@@ -2,15 +2,15 @@ import 'package:bloc/bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
 
-part 'user_message_state.dart';
+part 'system_message_state.dart';
 
 @injectable
-class UserMessageCubit extends Cubit<UserMessageState> {
-  UserMessageCubit() : super(UserMessageInitial());
+class SystemMessageCubit extends Cubit<SystemMessageState> {
+  SystemMessageCubit() : super(SystemMessageInitial());
 
   update(String message) {
     emit(
-      UserMessageUpdate(
+      SystemMessageUpdate(
         message: message,
         isSubmitted: false,
       ),
@@ -19,7 +19,7 @@ class UserMessageCubit extends Cubit<UserMessageState> {
 
   clear() {
     emit(
-      const UserMessageUpdate(
+      const SystemMessageUpdate(
         message: '',
         isSubmitted: true,
       ),

@@ -15,6 +15,6 @@ class HistoryMessageCubit extends Cubit<HistoryMessageState> {
       content: message,
     );
 
-    emit(HistoryMessageUpdate(history: [...state.history, lastChat]));
+    emit(HistoryMessageUpdate(histories: [...state.histories, lastChat]));
   }
 }

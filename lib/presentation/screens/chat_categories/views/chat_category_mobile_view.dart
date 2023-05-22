@@ -21,12 +21,7 @@ class ChatCategoryMobileView extends StatelessWidget {
   }
 
   List<Widget> buildCategories(BuildContext context) {
-    List<Widget> categories = [
-      Text(
-        "Chat",
-        style: Theme.of(context).textTheme.titleLarge,
-      ),
-    ];
+    List<Widget> categories = [];
 
     for (var title in chatCategories.keys) {
       categories.add(
@@ -61,6 +56,10 @@ class ChatCategoryMobileView extends StatelessWidget {
         children: [
           // buildHistory(context),
           // buildCategoryList(context),
+          Text(
+            "Chat",
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
           ...buildCategories(context),
         ],
       ),
