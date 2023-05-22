@@ -25,6 +25,7 @@ class ChatMobileView extends StatelessWidget {
     } else {
       historyMessageCubit.push(userMessageCubit.state.message, OpenAIChatMessageRole.user);
       userMessageCubit.clear();
+      aiMessageBloc.add(AIMessageFetchEvent(history: historyMessageCubit.state.histories));
     }
 
     AppBar appBar() {
@@ -49,7 +50,9 @@ class ChatMobileView extends StatelessWidget {
         reverse: true,
         child: Column(
           children: [
-            ChatListTile(isUserMessage: false, message: "Hi! How can I help you?"),
+            historyMessageCubit.state.histories.first.role == OpenAIChatMessageRole.system
+                ? ChatListTile(isUserMessage: false, message: "Hi! How can I help you?")
+                : Container(),
             BlocBuilder<HistoryMessageCubit, HistoryMessageState>(
               builder: (context, state) {
                 return ListView.builder(
@@ -62,7 +65,7 @@ class ChatMobileView extends StatelessWidget {
                       return Container();
                     }
 
-                    if (index % 2 != 0) {
+                    if (history.role == OpenAIChatMessageRole.user) {
                       return ChatListTile(isUserMessage: true, message: history.content);
                     }
                     return ChatListTile(isUserMessage: false, message: history.content);
@@ -109,9 +112,7 @@ class ChatMobileView extends StatelessWidget {
                     ),
                     keyboardType: TextInputType.multiline,
                     onChanged: (value) {
-                      if (state.message.isEmpty) {
-                        userMessageCubit.update(value);
-                      }
+                      userMessageCubit.update(value);
                     },
                   );
                 },

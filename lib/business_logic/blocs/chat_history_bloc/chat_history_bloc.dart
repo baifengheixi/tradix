@@ -7,6 +7,8 @@ part 'chat_history_state.dart';
 
 class ChatHistoryBloc extends Bloc<ChatHistoryEvent, ChatHistoryState> {
   ChatHistoryBloc() : super(ChatHistoryInitial()) {
-    on<ChatHistoryUpdateEvent>((event, emit) {});
+    on<ChatHistoryUpdateEvent>((event, emit) {
+      // TODO: implement event handler
+    });
   }
 }
