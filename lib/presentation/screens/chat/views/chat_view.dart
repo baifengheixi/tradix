@@ -21,9 +21,6 @@ class ChatView extends StatelessWidget {
         BlocProvider<HistoryMessageCubit>(
           create: (BuildContext context) => getIt<HistoryMessageCubit>(),
         ),
-        // BlocProvider<UserMessageCubit>(
-        //   create: (BuildContext context) => getIt<UserMessageCubit>(),
-        // ),
       ],
       child: ScreenTypeLayout.builder(
         mobile: (_) => OrientationLayoutBuilder(

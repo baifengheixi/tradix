@@ -4,7 +4,7 @@ import 'package:meta/meta.dart';
 part 'app_config_event.dart';
 part 'app_config_state.dart';
 
-class AppConfigBloc extends Bloc<AppConfigEvent, AppConfigState> with HydratedMixin {
+class AppConfigBloc extends HydratedBloc<AppConfigEvent, AppConfigState> {
   AppConfigBloc() : super(AppConfigInitial()) {
     on<AppConfigUpdateEvent>((event, emit) {
       emit(const AppConfigUpdate());

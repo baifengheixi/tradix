@@ -3,6 +3,7 @@ import 'package:dart_openai/openai.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_builder/responsive_builder.dart';
+import 'package:tradix/business_logic/cubit/chat_history/chat_history_cubit.dart';
 import 'package:tradix/business_logic/cubit/system_message/system_message_cubit.dart';
 import 'package:tradix/business_logic/cubit/user_message/user_message_cubit.dart';
 import 'package:tradix/presentation/screens/chat/bloc/ai_message/ai_message_bloc.dart';
@@ -14,15 +15,17 @@ class ChatMobileView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var userMessageCubit = BlocProvider.of<UserMessageCubit>(context);
-    var historyMessageCubit = BlocProvider.of<HistoryMessageCubit>(context);
-    var aiMessageBloc = BlocProvider.of<AIMessageBloc>(context);
-    var systemMessageCubit = BlocProvider.of<SystemMessageCubit>(context);
+    final userMessageCubit = BlocProvider.of<UserMessageCubit>(context);
+    final historyMessageCubit = BlocProvider.of<HistoryMessageCubit>(context);
+    final aiMessageBloc = BlocProvider.of<AIMessageBloc>(context);
+    final systemMessageCubit = BlocProvider.of<SystemMessageCubit>(context);
+    final chatHistoryCubit = BlocProvider.of<ChatHistoryCubit>(context);
 
     if (systemMessageCubit.state.message.isNotEmpty) {
       historyMessageCubit.push(systemMessageCubit.state.message, OpenAIChatMessageRole.system);
       systemMessageCubit.clear();
-    } else {
+    }
+    if (userMessageCubit.state.message.isNotEmpty) {
       historyMessageCubit.push(userMessageCubit.state.message, OpenAIChatMessageRole.user);
       userMessageCubit.clear();
       aiMessageBloc.add(AIMessageFetchEvent(history: historyMessageCubit.state.histories));
@@ -37,6 +40,7 @@ class ChatMobileView extends StatelessWidget {
           icon: const Icon(Icons.west),
           onPressed: () {
             userMessageCubit.clear();
+            chatHistoryCubit.push(histories: historyMessageCubit.state.histories);
             AutoRouter.of(context).pop();
           },
         ),
@@ -148,6 +152,9 @@ class ChatMobileView extends StatelessWidget {
         ),
         BlocListener<HistoryMessageCubit, HistoryMessageState>(
           listenWhen: (previous, current) {
+            if (historyMessageCubit.isClosed) {
+              return true;
+            }
             if (userMessageCubit.state.message.isNotEmpty) {
               userMessageCubit.clear();
               return true;
@@ -155,6 +162,9 @@ class ChatMobileView extends StatelessWidget {
             return false;
           },
           listener: (context, state) {
+            if (context.read<HistoryMessageCubit>().isClosed) {
+              print('history bloc is close');
+            }
             aiMessageBloc.add(AIMessageFetchEvent(history: historyMessageCubit.state.histories));
           },
         ),

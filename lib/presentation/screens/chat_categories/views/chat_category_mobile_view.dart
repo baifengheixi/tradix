@@ -1,10 +1,13 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:tradix/app/commons/extension/string.dart';
 import 'package:tradix/app/commons/global_variable.dart';
 import 'package:tradix/app/routes/router.gr.dart';
+import 'package:tradix/business_logic/blocs/app_config/app_config_bloc.dart';
+import 'package:tradix/business_logic/cubit/chat_history/chat_history_cubit.dart';
 import 'package:tradix/business_logic/cubit/user_message/user_message_cubit.dart';
 import 'package:tradix/presentation/screens/chat_categories/widgets/category_slider.dart';
 
@@ -118,6 +121,12 @@ class ChatCategoryMobileView extends StatelessWidget {
                 ),
               ],
             ),
+          ),
+          Text(HydratedBloc.storage.read('$AppConfigBloc').toString()),
+          BlocBuilder<ChatHistoryCubit, ChatHistoryState>(
+            builder: (context, state) {
+              return Text(HydratedBloc.storage.read('$ChatHistoryCubit').toString());
+            },
           ),
           ...buildCategories(context),
         ],

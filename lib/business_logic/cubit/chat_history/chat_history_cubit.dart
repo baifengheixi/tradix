@@ -4,12 +4,19 @@ import 'package:meta/meta.dart';
 
 part 'chat_history_state.dart';
 
-class ChatHistoryCubit extends Cubit<ChatHistoryState> with HydratedMixin {
+class ChatHistoryCubit extends HydratedCubit<ChatHistoryState> {
   ChatHistoryCubit() : super(ChatHistoryInitial());
 
-  push(List<OpenAIChatCompletionChoiceMessageModel> history) {
+  push({
+    required List<OpenAIChatCompletionChoiceMessageModel> histories,
+  }) {
     emit(
-      ChatHistoryUpdate(histories: [...state.histories, history]),
+      ChatHistoryUpdate(
+        historyData: {
+          ...state.historyData,
+          DateTime.now().toIso8601String(): histories,
+        },
+      ),
     );
   }
 
