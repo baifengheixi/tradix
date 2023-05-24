@@ -1,5 +1,5 @@
 import 'package:bloc/bloc.dart';
-import 'package:dart_openai/openai.dart';
+import 'package:dart_openai/dart_openai.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
 import 'package:tradix/data/repositories/chat_openai_repository.dart';

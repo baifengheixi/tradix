@@ -1,13 +1,13 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:dart_openai/openai.dart';
+import 'package:dart_openai/dart_openai.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:tradix/business_logic/cubit/chat_history/chat_history_cubit.dart';
+import 'package:tradix/business_logic/cubit/history_message/history_message_cubit.dart';
 import 'package:tradix/business_logic/cubit/system_message/system_message_cubit.dart';
 import 'package:tradix/business_logic/cubit/user_message/user_message_cubit.dart';
 import 'package:tradix/presentation/screens/chat/bloc/ai_message/ai_message_bloc.dart';
-import 'package:tradix/presentation/screens/chat/cubit/history_message/history_message_cubit.dart';
 import 'package:tradix/presentation/screens/chat/widget/chat_list_tile.dart';
 
 class ChatMobileView extends StatelessWidget {
@@ -39,8 +39,9 @@ class ChatMobileView extends StatelessWidget {
           color: Colors.black,
           icon: const Icon(Icons.west),
           onPressed: () {
+            chatHistoryCubit.update(historyMessageCubit.state);
             userMessageCubit.clear();
-            chatHistoryCubit.push(histories: historyMessageCubit.state.histories);
+            historyMessageCubit.clear();
             AutoRouter.of(context).pop();
           },
         ),
@@ -152,9 +153,6 @@ class ChatMobileView extends StatelessWidget {
         ),
         BlocListener<HistoryMessageCubit, HistoryMessageState>(
           listenWhen: (previous, current) {
-            if (historyMessageCubit.isClosed) {
-              return true;
-            }
             if (userMessageCubit.state.message.isNotEmpty) {
               userMessageCubit.clear();
               return true;
@@ -162,7 +160,8 @@ class ChatMobileView extends StatelessWidget {
             return false;
           },
           listener: (context, state) {
-            if (context.read<HistoryMessageCubit>().isClosed) {
+            // chatHistoryCubit.push(histories: historyMessageCubit.state.histories);
+            if (historyMessageCubit.isClosed) {
               print('history bloc is close');
             }
             aiMessageBloc.add(AIMessageFetchEvent(history: historyMessageCubit.state.histories));

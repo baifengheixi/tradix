@@ -17,8 +17,9 @@ class AppRouter extends $AppRouter {
           page: HomeRoute.page,
           initial: hasAlreadyInitial(),
           children: [
-            RedirectRoute(path: '', redirectTo: ChatCategoryRoute.name),
-            AutoRoute(path: ChatCategoryRoute.name, page: ChatCategoryRoute.page),
+            RedirectRoute(path: '', redirectTo: ChatExploreRoute.name),
+            AutoRoute(path: ChatExploreRoute.name, page: ChatExploreRoute.page),
+            AutoRoute(path: ImageCategoryRoute.name, page: ImageCategoryRoute.page),
             AutoRoute(path: ImageCategoryRoute.name, page: ImageCategoryRoute.page),
             AutoRoute(path: SettingRoute.name, page: SettingRoute.page),
           ],
@@ -31,6 +32,14 @@ class AppRouter extends $AppRouter {
         AutoRoute(
           path: ChatRoute.name.path,
           page: ChatRoute.page,
+        ),
+        AutoRoute(
+          path: ChatFeatureRoute.name.path,
+          page: ChatFeatureRoute.page,
+        ),
+        AutoRoute(
+          path: ChatHistoryRoute.name.path,
+          page: ChatHistoryRoute.page,
         ),
       ];
 }

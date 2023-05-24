@@ -1,23 +1,28 @@
-import 'package:dart_openai/openai.dart';
+import 'package:dart_openai/dart_openai.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:meta/meta.dart';
+import 'package:tradix/business_logic/cubit/history_message/history_message_cubit.dart';
 
 part 'chat_history_state.dart';
 
 class ChatHistoryCubit extends HydratedCubit<ChatHistoryState> {
   ChatHistoryCubit() : super(ChatHistoryInitial());
 
-  push({
-    required List<OpenAIChatCompletionChoiceMessageModel> histories,
-  }) {
-    emit(
-      ChatHistoryUpdate(
-        historyData: {
-          ...state.historyData,
-          DateTime.now().toIso8601String(): histories,
-        },
-      ),
-    );
+  update(HistoryMessageState historyMessageState) {
+    var historyData = {...state.historyData};
+
+    print("=========");
+    print(historyMessageState.prevDateTime);
+    print(historyMessageState.dateTime);
+    print(historyData.keys.toString());
+    if (historyData[historyMessageState.prevDateTime] != null) {
+      print("=========");
+      print("removed");
+      historyData.remove(historyMessageState.prevDateTime);
+    }
+    historyData[historyMessageState.dateTime] = historyMessageState.histories;
+
+    emit(ChatHistoryUpdate(historyData: historyData));
   }
 
   @override

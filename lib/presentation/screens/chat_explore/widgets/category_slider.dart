@@ -1,5 +1,3 @@
-import 'dart:math' as math;
-
 import 'package:auto_route/auto_route.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -9,29 +7,15 @@ import 'package:responsive_builder/responsive_builder.dart';
 import 'package:tradix/app/commons/extension/string.dart';
 import 'package:tradix/app/routes/router.gr.dart';
 import 'package:tradix/business_logic/cubit/system_message/system_message_cubit.dart';
+import 'package:tradix/presentation/screens/chat_explore/widgets/category.dart';
 
 class CategorySlider extends StatelessWidget {
   final Map<String, String> titleData;
-  final int width = 40;
-  final int maxLine = 2;
 
   const CategorySlider({
     required this.titleData,
     super.key,
   });
-
-  randomColor() {
-    Color randomColor;
-    do {
-      randomColor = Color.fromRGBO(
-        math.Random().nextInt(256),
-        math.Random().nextInt(256),
-        math.Random().nextInt(256),
-        0.5,
-      );
-    } while (randomColor.computeLuminance() > 0.3);
-    return randomColor;
-  }
 
   List<Widget> buildItems(BuildContext context) {
     var systemMessageCubit = BlocProvider.of<SystemMessageCubit>(context);
@@ -56,21 +40,27 @@ class CategorySlider extends StatelessWidget {
                 //   },
                 // );
               },
-              child: Container(
-                padding: const EdgeInsets.all(16),
-                margin: EdgeInsets.all((2.5).screenWidth),
-                width: (width).screenWidth,
-                decoration: BoxDecoration(
-                  borderRadius: const BorderRadius.all(Radius.circular(20)),
-                  color: randomColor(),
+              child: Category(
+                margin: const EdgeInsets.symmetric(horizontal: 8),
+                backgroundGradient: const LinearGradient(
+                  colors: [
+                    Colors.black45,
+                    Colors.black38,
+                    Colors.black26,
+                    Colors.black12,
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  stops: [0, 0.2, 0.5, 0.8],
                 ),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: AutoSizeText(
-                    subTitle,
-                    style: Theme.of(context).textTheme.bodyLarge,
-                    maxLines: maxLine,
+                child: AutoSizeText(
+                  subTitle,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 18,
                   ),
+                  maxLines: 2,
                 ),
               ),
             );
@@ -87,7 +77,7 @@ class CategorySlider extends StatelessWidget {
     return CarouselSlider(
       options: CarouselOptions(
         height: 15.screenHeight,
-        viewportFraction: width / 100,
+        viewportFraction: 0.6,
         enableInfiniteScroll: false,
         padEnds: false,
       ),

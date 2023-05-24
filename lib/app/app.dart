@@ -8,6 +8,7 @@ import 'package:tradix/app/dependency_injection/dependencies.dart';
 import 'package:tradix/app/routes/router.dart';
 import 'package:tradix/business_logic/blocs/app_config/app_config_bloc.dart';
 import 'package:tradix/business_logic/cubit/chat_history/chat_history_cubit.dart';
+import 'package:tradix/business_logic/cubit/history_message/history_message_cubit.dart';
 import 'package:tradix/business_logic/cubit/system_message/system_message_cubit.dart';
 import 'package:tradix/business_logic/cubit/user_message/user_message_cubit.dart';
 
@@ -32,6 +33,9 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider<AppConfigBloc>(
           create: (BuildContext context) => AppConfigBloc(),
+        ),
+        BlocProvider<HistoryMessageCubit>(
+          create: (BuildContext context) => HistoryMessageCubit(),
         ),
         BlocProvider<SystemMessageCubit>(
           create: (BuildContext context) => SystemMessageCubit(),
