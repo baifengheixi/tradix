@@ -11,13 +11,7 @@ class ChatHistoryCubit extends HydratedCubit<ChatHistoryState> {
   update(HistoryMessageState historyMessageState) {
     var historyData = {...state.historyData};
 
-    print("=========");
-    print(historyMessageState.prevDateTime);
-    print(historyMessageState.dateTime);
-    print(historyData.keys.toString());
     if (historyData[historyMessageState.prevDateTime] != null) {
-      print("=========");
-      print("removed");
       historyData.remove(historyMessageState.prevDateTime);
     }
     historyData[historyMessageState.dateTime] = historyMessageState.histories;

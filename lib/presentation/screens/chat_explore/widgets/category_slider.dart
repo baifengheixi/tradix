@@ -44,14 +44,13 @@ class CategorySlider extends StatelessWidget {
                 margin: const EdgeInsets.symmetric(horizontal: 8),
                 backgroundGradient: const LinearGradient(
                   colors: [
-                    Colors.black45,
                     Colors.black38,
                     Colors.black26,
                     Colors.black12,
                   ],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
-                  stops: [0, 0.2, 0.5, 0.8],
+                  stops: [0, 0.2, 0.8],
                 ),
                 child: AutoSizeText(
                   subTitle,

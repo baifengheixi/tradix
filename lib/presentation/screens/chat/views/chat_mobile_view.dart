@@ -31,6 +31,19 @@ class ChatMobileView extends StatelessWidget {
       aiMessageBloc.add(AIMessageFetchEvent(history: historyMessageCubit.state.histories));
     }
 
+    updateHistory(String message, OpenAIChatMessageRole role) {
+      historyMessageCubit.push(message, role);
+      if (historyMessageCubit.state.histories.first.role == OpenAIChatMessageRole.user &&
+          historyMessageCubit.state.histories.length < 2) {
+        return;
+      }
+      if (historyMessageCubit.state.histories.first.role == OpenAIChatMessageRole.system &&
+          historyMessageCubit.state.histories.length < 3) {
+        return;
+      }
+      chatHistoryCubit.update(historyMessageCubit.state);
+    }
+
     AppBar appBar() {
       return AppBar(
         backgroundColor: Colors.white,
@@ -39,7 +52,6 @@ class ChatMobileView extends StatelessWidget {
           color: Colors.black,
           icon: const Icon(Icons.west),
           onPressed: () {
-            chatHistoryCubit.update(historyMessageCubit.state);
             userMessageCubit.clear();
             historyMessageCubit.clear();
             AutoRouter.of(context).pop();
@@ -134,7 +146,7 @@ class ChatMobileView extends StatelessWidget {
                 if (userMessageCubit.state.message.isEmpty) {
                   return;
                 }
-                historyMessageCubit.push(userMessageCubit.state.message, OpenAIChatMessageRole.user);
+                updateHistory(userMessageCubit.state.message, OpenAIChatMessageRole.user);
               },
             ),
           ],
@@ -147,7 +159,7 @@ class ChatMobileView extends StatelessWidget {
         BlocListener<AIMessageBloc, AIMessageState>(
           listener: (context, state) {
             if (state.isCompleted) {
-              historyMessageCubit.push(aiMessageBloc.state.message, OpenAIChatMessageRole.assistant);
+              updateHistory(aiMessageBloc.state.message, OpenAIChatMessageRole.assistant);
             }
           },
         ),
@@ -160,10 +172,6 @@ class ChatMobileView extends StatelessWidget {
             return false;
           },
           listener: (context, state) {
-            // chatHistoryCubit.push(histories: historyMessageCubit.state.histories);
-            if (historyMessageCubit.isClosed) {
-              print('history bloc is close');
-            }
             aiMessageBloc.add(AIMessageFetchEvent(history: historyMessageCubit.state.histories));
           },
         ),

@@ -52,7 +52,7 @@ class ChatFeatureMobileView extends StatelessWidget {
                 ],
               ),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: 16),
             CategorySlider(titleData: chatCategories[title]!),
             const SizedBox(height: 16),
             SizedBox(

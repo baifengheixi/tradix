@@ -51,13 +51,12 @@ class ChatHistoryMobileView extends StatelessWidget {
 
             return GestureDetector(
               onTap: () {
-                historyMessageCubit.pushMany(chatHistory.value);
+                historyMessageCubit.pushOldHistory(chatHistory.key, chatHistory.value);
                 AutoRouter.of(context).pushNamed(ChatRoute.name.path);
               },
               child: History(
-                firstMessage: chatHistory.value.last.content,
+                firstMessage: chatHistory.value[chatHistory.value.length - 2].content,
                 secondMessage: chatHistory.value.last.content,
-                // secondMessage: chatHistory.value[chatHistories.length - 2].content,
                 historyDateTime: chatHistory.key,
               ),
             );

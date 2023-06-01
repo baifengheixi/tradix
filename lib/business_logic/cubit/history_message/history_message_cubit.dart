@@ -10,8 +10,6 @@ class HistoryMessageCubit extends Cubit<HistoryMessageState> {
   HistoryMessageCubit() : super(HistoryMessageInitial());
 
   push(String message, OpenAIChatMessageRole role) {
-    print("=========");
-    print("push");
     var lastMessage = OpenAIChatCompletionChoiceMessageModel(
       role: role,
       content: message,
@@ -20,20 +18,18 @@ class HistoryMessageCubit extends Cubit<HistoryMessageState> {
     emit(
       HistoryMessageUpdate(
         histories: [...state.histories, lastMessage],
-        prevDateTime: state.prevDateTime,
+        prevDateTime: state.dateTime,
         dateTime: DateTime.now(),
       ),
     );
   }
 
-  pushMany(List<OpenAIChatCompletionChoiceMessageModel> histories) {
-    print("=========");
-    print("push many");
+  pushOldHistory(String dateTime, List<OpenAIChatCompletionChoiceMessageModel> histories) {
     emit(
       HistoryMessageUpdate(
-        histories: [...state.histories, ...histories],
-        prevDateTime: state.dateTime,
-        dateTime: DateTime.parse(state.dateTime),
+        histories: histories,
+        prevDateTime: dateTime,
+        dateTime: DateTime.parse(dateTime),
       ),
     );
   }

@@ -12,17 +12,17 @@ import 'package:tradix/presentation/screens/chat_explore/widgets/history.dart';
 class HistorySlider extends StatelessWidget {
   const HistorySlider({super.key});
 
-  List<Widget> buildItems({
+  List<Widget> buildHistories({
     required Map<String, List<OpenAIChatCompletionChoiceMessageModel>> historyData,
   }) {
     List<Widget> items = [];
 
-    var count = 0;
     var chatHistories = historyData.entries.toList();
     chatHistories.sort((a, b) => b.key.compareTo(a.key));
 
+    var count = 1;
     for (var chatHistory in chatHistories) {
-      if (count > 2) break;
+      if (count > 5) break;
       items.add(
         Builder(
           builder: (BuildContext context) {
@@ -30,13 +30,12 @@ class HistorySlider extends StatelessWidget {
 
             return GestureDetector(
               onTap: () {
-                historyMessageCubit.pushMany(chatHistory.value);
+                historyMessageCubit.pushOldHistory(chatHistory.key, chatHistory.value);
                 AutoRouter.of(context).pushNamed(ChatRoute.name.path);
               },
               child: History(
-                firstMessage: chatHistory.value.last.content,
+                firstMessage: chatHistory.value[chatHistory.value.length - 2].content,
                 secondMessage: chatHistory.value.last.content,
-                // secondMessage: chatHistory.value[chatHistories.length - 2].content,
                 historyDateTime: chatHistory.key,
               ),
             );
@@ -62,7 +61,7 @@ class HistorySlider extends StatelessWidget {
               enableInfiniteScroll: false,
               padEnds: false,
             ),
-            items: buildItems(historyData: state.historyData),
+            items: buildHistories(historyData: state.historyData),
           ),
         );
       },
